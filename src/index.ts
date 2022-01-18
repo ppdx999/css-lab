@@ -19,7 +19,7 @@ export const state = <T>(initialState: T) => {
     };
 };
 
-// IMPORTANT: To Avoid Cyclic Dependency
+// IMPORTANT: Intentionally Delay Import To Avoid Cyclic Dependency
 import { html, render } from "lit-html";
 import { WarningButton } from "./components/WarningButton";
 
