@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit-html";
-import { state } from "..";
+import { falseIO, genState, id, state, trueIO } from "..";
 
 export type popupOn = {
   popupOn: () => boolean;
@@ -12,13 +12,13 @@ export type popupOff = {
 export const Popup =
   (Popup: (props: popupOff) => TemplateResult) =>
   (Trigger: (props: popupOn) => TemplateResult) => {
-    const visible = state(false);
-    const popupOn = () => visible(true);
-    const popupOff = () => visible(false);
+    const visible = genState(false);
+    const popupOn = () => visible(trueIO);
+    const popupOff = () => visible(falseIO);
     return () => {
       return html`
         ${Trigger({ popupOn })}
-        ${visible()
+        ${visible(id)
           ? html`
               <style>
                 .popup {

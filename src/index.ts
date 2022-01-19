@@ -1,23 +1,22 @@
-export const state = <T>(initialState: T) => {
+export type state<T> = (update: (prev: T) => T) => T;
+export const genState = <T>(initialState: T) => {
   let state = initialState;
 
-  if (typeof state === "object")
-    return (newState?: Partial<T>) => {
-      if (newState !== undefined) {
-        state = { ...state, ...newState };
-        renderApp();
-      }
-      return state;
-    };
-  else
-    return (newState?: T) => {
-      if (newState !== undefined) {
-        state = newState;
-        renderApp();
-      }
-      return state;
-    };
+  return (update: (prev: T) => T) => {
+    const prevState = state;
+    state = update(prevState);
+    if (state !== prevState) renderApp();
+    return state;
+  };
 };
+
+export const id = <T>(a: T) => a;
+export const inc = (prev: number) => prev + 1;
+export const dec = (prev: number) => prev - 1;
+export const add = (left: number) => (right: number) => left + right;
+export const trueIO = () => true;
+export const falseIO = () => false;
+export const toggle = (prev: boolean) => !prev;
 
 // IMPORTANT: Intentionally Delay Import To Avoid Cyclic Dependency
 import { html, render } from "lit-html";
